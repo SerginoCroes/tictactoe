@@ -1,0 +1,25 @@
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+.board {
+    height: min(50vh, 50vw);
+    width: min(50vh, 50vw);
+    margin: 50px auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: min(1vh, 1vw);
+}
+
+.box {
+    background-color: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: sans-serif;
+    font-size: min(10vw, 10vh);
+    font-weight: bold;
+}
