@@ -61,8 +61,8 @@ const displayController = (function() {
 
     function displayEnd(winner) {
         msgHTML.innerText = winner ? `Player ${winner.sign} won!` : 'No winner!';
-        restartHTML.style.display = 'block';
         restartHTML.addEventListener('click', () => game.initGame());
+        restartHTML.style.display = 'block';
     }
 
     return {displayStart, updateDisplay, displayEnd, displayTurn};
@@ -104,7 +104,7 @@ const game = (function() {
         }
     }
 
-    return {initGame, advanceTurn};
+    return {activePlayer, initGame, advanceTurn};
 
 })();
 
