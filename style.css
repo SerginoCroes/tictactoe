@@ -8,6 +8,10 @@
     text-align: center;
 }
 
+h1 {
+    margin: 30px;
+}
+
 .board {
     height: min(50vh, 50vw);
     width: min(50vh, 50vw);
