@@ -104,7 +104,7 @@ const game = (function() {
         }
     }
 
-    return {initGame, advanceTurn, activePlayer};
+    return {initGame, advanceTurn};
 
 })();
 
