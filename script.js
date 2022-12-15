@@ -10,14 +10,15 @@ const gameBoard = (function() {
         item.addEventListener('click', () => {if(!winner){addItem(index)}});
     });
 
-    function resetBoard(){
+    function resetBoard() {
         winner = false;
         boardContent = ['', '', '',
                         '', '', '',
                         '', '', ''];
+        displayController.updateDisplay(boardContent, boardHTML);
     }
 
-    function addItem(pos){
+    function addItem(pos) {
         if (boardContent[pos] === ''){
             boardContent.splice(pos, 1, game.activePlayer.sign);
             displayController.updateDisplay(boardContent, boardHTML);
@@ -25,10 +26,9 @@ const gameBoard = (function() {
         }
     }
 
-    function checkWin(player){
+    function checkWin(player) {
         for (check of winMatrices){
-            console.log(`checking matrix ${check} for player ${player.sign}`);
-
+            //console.log(`checking matrix ${check} for player ${player.sign}`);
             if([boardContent[check[0]], boardContent[check[1]], boardContent[check[2]]].every(item => item === player.sign)){
                 winner = true;
                 return true;
@@ -42,23 +42,30 @@ const gameBoard = (function() {
 
 const displayController = (function() {
 
-    const msgHTML = document.querySelector('#winmsg')
+    const msgHTML = document.querySelector('#msg');
+    const restartHTML = document.querySelector('#restart');
 
-    function updateDisplay(boardContent, boardHTML){
+    function displayStart() {
+        restartHTML.style.display = 'none';
+    }
+
+    function updateDisplay(boardContent, boardHTML) {
         for (item in boardContent){
             boardHTML[item].innerText = boardContent[item];
         }
     }
 
-    function displayTurn(player){
+    function displayTurn(player) {
         msgHTML.innerText = `Player ${player.sign}'s turn.`;
     }
 
-    function displayEnd(winner){
+    function displayEnd(winner) {
         msgHTML.innerText = winner ? `Player ${winner.sign} won!` : 'No winner!';
+        restartHTML.style.display = 'block';
+        restartHTML.addEventListener('click', () => game.initGame());
     }
 
-    return {updateDisplay, displayEnd, displayTurn};
+    return {displayStart, updateDisplay, displayEnd, displayTurn};
 
 })();
 
@@ -71,17 +78,21 @@ const game = (function() {
     const playerX = player('x');
     const playerO = player('o');
 
-    let turnCounter = 0;
-    let activePlayer = playerX;
+    let turnCounter;
+    let activePlayer;
     let winner;
 
     function initGame(){
+        turnCounter = 0;
+        this.activePlayer = playerX;
+
         gameBoard.resetBoard();
         displayController.displayTurn(this.activePlayer);
+        displayController.displayStart();
     }
 
     function advanceTurn(){
-        if(gameBoard.checkWin(this.activePlayer)){
+        if (gameBoard.checkWin(this.activePlayer)){
             winner = this.activePlayer;
             displayController.displayEnd(winner);
         } else if (turnCounter === 8) {
