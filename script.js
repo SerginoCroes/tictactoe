@@ -20,7 +20,7 @@ const gameBoard = (function() {
 
     function addItem(pos) {
         if (boardContent[pos] === ''){
-            boardContent.splice(pos, 1, game.activePlayer.sign);
+            boardContent.splice(pos, 1, game.getActivePlayerSign());
             displayController.updateDisplay(boardContent, boardHTML);
             game.advanceTurn();
         }
@@ -65,11 +65,11 @@ const displayController = (function() {
         restartHTML.style.display = 'block';
     }
 
-    return {displayStart, updateDisplay, displayEnd, displayTurn};
+    return {displayStart, updateDisplay, displayTurn, displayEnd};
 
 })();
 
-function player(sign) {
+const player = function(sign) {
     return {sign};
 }
 
@@ -84,28 +84,32 @@ const game = (function() {
 
     function initGame() {
         turnCounter = 0;
-        game.activePlayer = playerX;
+        activePlayer = playerX;
 
         gameBoard.resetBoard();
-        displayController.displayTurn(game.activePlayer);
+        displayController.displayTurn(activePlayer);
         displayController.displayStart();
     }
 
     function advanceTurn() {
-        if (gameBoard.checkWin(game.activePlayer)){
-            winner = game.activePlayer;
+        if (gameBoard.checkWin(activePlayer)){
+            winner = activePlayer;
             displayController.displayEnd(winner);
         } else if (turnCounter >= 8) {
             displayController.displayEnd(undefined);
         } else {
             turnCounter++;
-            game.activePlayer = game.activePlayer === playerO ? playerX : playerO;
-            displayController.displayTurn(game.activePlayer);
+            activePlayer = activePlayer === playerO ? playerX : playerO;
+            displayController.displayTurn(activePlayer);
         }
     }
 
-    return {initGame, advanceTurn};
+	function getActivePlayerSign() {
+		return activePlayer.sign;
+	}
+
+    return {initGame, advanceTurn, getActivePlayerSign};
 
 })();
 
- game.initGame();
+game.initGame();
