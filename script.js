@@ -73,7 +73,7 @@ function player(sign) {
     return {sign};
 }
 
-const game = (function() {
+ const game = (function() {
 
     const playerX = player('x');
     const playerO = player('o');
@@ -84,28 +84,28 @@ const game = (function() {
 
     function initGame(){
         turnCounter = 0;
-        this.activePlayer = playerX;
+        activePlayer = playerX;
 
         gameBoard.resetBoard();
-        displayController.displayTurn(this.activePlayer);
+        displayController.displayTurn(game.activePlayer);
         displayController.displayStart();
     }
 
     function advanceTurn(){
-        if (gameBoard.checkWin(this.activePlayer)){
-            winner = this.activePlayer;
+        if (gameBoard.checkWin(game.activePlayer)){
+            winner = game.activePlayer;
             displayController.displayEnd(winner);
         } else if (turnCounter === 8) {
             displayController.displayEnd(undefined);
         } else {
             turnCounter++;
-            this.activePlayer = this.activePlayer === playerO ? playerX : playerO;
-            displayController.displayTurn(this.activePlayer);
+            game.activePlayer = game.activePlayer === playerO ? playerX : playerO;
+            displayController.displayTurn(game.activePlayer);
         }
     }
 
-    return {activePlayer, initGame, advanceTurn};
+    return {initGame, advanceTurn};
 
 })();
 
-game.initGame();
+game.initGame(); 
