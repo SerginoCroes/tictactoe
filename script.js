@@ -1,24 +1,16 @@
-const gameBoard = (function() {
+const gameBoard = (() => {
 
     const boardHTML = document.querySelectorAll('.box');
     const winMatrices = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
 
-    let boardContent = [];
+    let boardContent;
     let winner;
 
     boardHTML.forEach((item, index) => {
         item.addEventListener('click', () => {if(!winner){addItem(index)}});
     });
 
-    function resetBoard() {
-        winner = false;
-        boardContent = ['', '', '',
-                        '', '', '',
-                        '', '', ''];
-        displayController.updateDisplay(boardContent, boardHTML);
-    }
-
-    function addItem(pos) {
+    const addItem = pos => {
         if (boardContent[pos] === ''){
             boardContent.splice(pos, 1, game.getActivePlayerSign());
             displayController.updateDisplay(boardContent, boardHTML);
@@ -26,9 +18,14 @@ const gameBoard = (function() {
         }
     }
 
-    function checkWin(player) {
+    const resetBoard = () => {
+        winner = false;
+        boardContent = ['', '', '', '', '', '', '', '', ''];
+        displayController.updateDisplay(boardContent, boardHTML);
+    }
+
+    const checkWin = player => {
         for (check of winMatrices){
-            //console.log(`checking matrix ${check} for player ${player.sign}`);
             if([boardContent[check[0]], boardContent[check[1]], boardContent[check[2]]].every(item => item === player.sign)){
                 winner = true;
                 return true;
@@ -40,26 +37,26 @@ const gameBoard = (function() {
 
 })();
 
-const displayController = (function() {
+const displayController = (() => {
 
     const msgHTML = document.querySelector('#msg');
     const restartHTML = document.querySelector('#restart');
 
-    function displayStart() {
+    const displayStart = () => {
         restartHTML.style.display = 'none';
     }
 
-    function updateDisplay(boardContent, boardHTML) {
+    const updateDisplay = (boardContent, boardHTML) => {
         for (item in boardContent){
             boardHTML[item].innerText = boardContent[item];
         }
     }
 
-    function displayTurn(player) {
+    const displayTurn = player => {
         msgHTML.innerText = `Player ${player.sign}'s turn.`;
     }
 
-    function displayEnd(winner) {
+    const displayEnd = winner => {
         msgHTML.innerText = winner ? `Player ${winner.sign} won!` : 'No winner!';
         restartHTML.addEventListener('click', () => game.initGame());
         restartHTML.style.display = 'block';
@@ -69,20 +66,17 @@ const displayController = (function() {
 
 })();
 
-const player = function(sign) {
-    return {sign};
-}
+const player = sign => {return {sign}};
 
-const game = (function() {
+const game = (() => {
 
     const playerX = player('x');
     const playerO = player('o');
 
     let turnCounter;
     let activePlayer;
-    let winner;
 
-    function initGame() {
+    const initGame = () =>  {
         turnCounter = 0;
         activePlayer = playerX;
 
@@ -91,12 +85,11 @@ const game = (function() {
         displayController.displayStart();
     }
 
-    function advanceTurn() {
+    const advanceTurn = () => {
         if (gameBoard.checkWin(activePlayer)){
-            winner = activePlayer;
-            displayController.displayEnd(winner);
+            displayController.displayEnd(activePlayer);
         } else if (turnCounter >= 8) {
-            displayController.displayEnd(undefined);
+            displayController.displayEnd(false);
         } else {
             turnCounter++;
             activePlayer = activePlayer === playerO ? playerX : playerO;
@@ -104,7 +97,7 @@ const game = (function() {
         }
     }
 
-	function getActivePlayerSign() {
+	const getActivePlayerSign = () => {
 		return activePlayer.sign;
 	}
 
