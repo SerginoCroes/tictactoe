@@ -101,7 +101,6 @@ const game = (function() {
             turnCounter++;
             game.activePlayer = game.activePlayer === playerO ? playerX : playerO;
             displayController.displayTurn(game.activePlayer);
-            console.log(game.activePlayer);
         }
     }
 
@@ -109,4 +108,4 @@ const game = (function() {
 
 })();
 
- game.initGame(); 
+ game.initGame();
