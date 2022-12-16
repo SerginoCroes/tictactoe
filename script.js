@@ -7,11 +7,11 @@ const gameBoard = (() => {
     let winner;
 
     boardHTML.forEach((item, index) => {
-        item.addEventListener('click', () => {if(!winner) addItem(index)});
+        item.addEventListener('click', () => {if (!winner) addItem(index)});
     });
 
     const addItem = pos => {
-        if (boardContent[pos] === ''){
+        if (boardContent[pos] === '') {
             boardContent.splice(pos, 1, game.getActivePlayerSign());
             displayController.updateDisplay(boardContent, boardHTML);
             game.advanceTurn();
@@ -25,12 +25,13 @@ const gameBoard = (() => {
     }
 
     const checkWin = player => {
-        for (check of winMatrices){
+        for (check of winMatrices) {
             if([boardContent[check[0]], boardContent[check[1]], boardContent[check[2]]].every(item => item === player.sign)){
                 winner = true;
                 return true;
             }
         }
+        return false;
     }
 
     return {resetBoard, checkWin};
@@ -42,12 +43,14 @@ const displayController = (() => {
     const msgHTML = document.querySelector('#msg');
     const restartHTML = document.querySelector('#restart');
 
+    restartHTML.addEventListener('click', () => game.initGame());
+
     const displayStart = () => {
         restartHTML.style.display = 'none';
     }
 
     const updateDisplay = (boardContent, boardHTML) => {
-        for (item in boardContent){
+        for (item in boardContent) {
             boardHTML[item].innerText = boardContent[item];
         }
     }
@@ -58,7 +61,6 @@ const displayController = (() => {
 
     const displayEnd = winner => {
         msgHTML.innerText = winner ? `Player ${winner.sign} won!` : 'No winner!';
-        restartHTML.addEventListener('click', () => game.initGame());
         restartHTML.style.display = 'block';
     }
 
@@ -76,7 +78,7 @@ const game = (() => {
     let turnCounter;
     let activePlayer;
 
-    const initGame = () =>  {
+    const initGame = () => {
         turnCounter = 0;
         activePlayer = playerX;
 
@@ -86,7 +88,7 @@ const game = (() => {
     }
 
     const advanceTurn = () => {
-        if (gameBoard.checkWin(activePlayer)){
+        if (gameBoard.checkWin(activePlayer)) {
             displayController.displayEnd(activePlayer);
         } else if (turnCounter >= 8) {
             displayController.displayEnd(false);
@@ -97,9 +99,7 @@ const game = (() => {
         }
     }
 
-	const getActivePlayerSign = () => {
-		return activePlayer.sign;
-	}
+	const getActivePlayerSign = () => activePlayer.sign;
 
     return {initGame, advanceTurn, getActivePlayerSign};
 
