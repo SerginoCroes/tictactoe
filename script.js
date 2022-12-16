@@ -7,7 +7,7 @@ const gameBoard = (() => {
     let winner;
 
     boardHTML.forEach((item, index) => {
-        item.addEventListener('click', () => {if(!winner){addItem(index)}});
+        item.addEventListener('click', () => {if(!winner) addItem(index)});
     });
 
     const addItem = pos => {
@@ -66,7 +66,7 @@ const displayController = (() => {
 
 })();
 
-const player = sign => {return {sign}};
+const player = sign => ({sign});
 
 const game = (() => {
 

@@ -17,9 +17,9 @@ p {
 }
 
 .board {
-    height: min(45vh, 45vw);
-    width: min(45vh, 45vw);
-    margin: 50px auto;
+    height: min(50vh, 50vw);
+    width: min(50vh, 50vw);
+    margin: 2vh auto;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
@@ -35,6 +35,6 @@ p {
 
 #restart {
     border: 2px solid #000;
-    width: min(45vh, 45vw);
+    width: min(50vh, 50vw);
     margin: 2vh auto;
 }
